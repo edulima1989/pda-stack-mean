@@ -1,26 +1,42 @@
-const empleadoController:any={};
+import type { Request, Response } from 'express';
+import type { EmployeeRepositoryInterface } from '../repositories/employee.repository.interface.js';
+import { AppError } from '../middlewares/error-handler.js';
+import { sendSuccess } from '../utils/response.js';
 
-const Empleado=require('../models/empleado');
+export class EmpleadoController {
 
-empleadoController.getEmpleado=async(req,res)=>{
-    const empleados=await Empleado.find();
-    res.json(empleados);
+    constructor(private empleadoRepository: EmployeeRepositoryInterface) {}
+
+    async getAllEmpleados(req: Request, res: Response) {
+        const empleados = await this.empleadoRepository.getAllEmployees();
+        return sendSuccess(res, 200, empleados);
+    }
+
+    async getEmpleado(req: Request<{ id: string }>, res: Response) {
+        const empleado = await this.empleadoRepository.getEmployeeById(req.params.id);
+
+        if (!empleado) {
+            throw new AppError(404, 'Empleado no encontrado');
+        }
+
+        return sendSuccess(res, 200, empleado);
+    }
+
+    async addEmpleado(req: Request, res: Response) {
+        const empleado = await this.empleadoRepository.createEmployee(req.body);
+        return sendSuccess(res, 201, empleado, 'Empleado guardado');
+    }
+
+    async updateEmpleado(req: Request<{ id: string }>, res: Response) {
+        await this.empleadoRepository.updateEmployee(req.params.id, req.body);
+        return sendSuccess(res, 200, null, 'Empleado actualizado');
+    }
+
+    async deleteEmpleado(req: Request<{ id: string }>, res: Response) {
+        await this.empleadoRepository.deleteEmployee(req.params.id);
+        return sendSuccess(res, 200, null, 'Empleado eliminado');
+    }
+
 }
 
-empleadoController.addEmpleado=async(req,res)=>{
-    const empleado=new Empleado(req.body);
-    await empleado.save();
-    res.json({status:'Empleado guardado'});
-}
 
-empleadoController.updateEmpleado=async(req,res)=>{
-    const {id}=req.params;
-    const empleado=await Empleado.findByIdAndUpdate(id,req.body);
-    res.json({status:'Empleado actualizado'});
-}
-empleadoController.deleteEmpleado=async(req,res)=>{
-    const {id}=req.params;
-    await Empleado.findByIdAndRemove(id);
-    res.json({status:'Empleado eliminado'});
-}
-module.exports=empleadoController;
