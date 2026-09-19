@@ -47,6 +47,10 @@ Debido a cambios internos en las APIs globales de las versiones de Node.js moder
    ```
    *El backend inicializará el compilador dinámico y escuchará peticiones en el puerto `3000`.*
 
+### Documentación Swagger
+
+Con el backend en ejecución, abre [http://localhost:3000/api-docs](http://localhost:3000/api-docs) para consultar y probar el contrato OpenAPI de la API de empleados.
+
 ### 2. Despliegue de la Interfaz (Frontend)
 1. En una nueva terminal, navega al directorio del cliente:
    ```bash
