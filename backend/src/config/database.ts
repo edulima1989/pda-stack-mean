@@ -2,9 +2,13 @@
 import mongoose from 'mongoose';
 
 export const connectDatabase = async (): Promise<void> => {
-  const MONGO_URI = 'mongodb+srv://edupiscis:lima1989@masterensoftware.0eezwpv.mongodb.net/usuarios_db';
   try {
-    await mongoose.connect(MONGO_URI);
+    const mongoUri = process.env.MONGO_URI;
+    if (!mongoUri) {
+      throw new Error('La variable de entorno MONGO_URI no está configurada');
+    }
+
+    await mongoose.connect(mongoUri);
     console.log('🔄 [Database]: Conexión exitosa a MongoDB');
   } catch (error) {
     console.error('❌ Error crítico al conectar a la base de datos:', error);

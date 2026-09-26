@@ -41,7 +41,12 @@ Debido a cambios internos en las APIs globales de las versiones de Node.js moder
    ```bash
    npm install
    ```
-3. Ejecuta el servidor en modo de desarrollo adaptativo (*Hot Reload watch*):
+3. Crea el archivo local de variables de entorno a partir de la plantilla y configura tu URI de MongoDB:
+   ```bash
+   copy .env.example .env
+   ```
+   Edita `.env` y asigna tu cadena de conexión a `MONGO_URI`. El archivo `.env` está excluido de Git.
+4. Ejecuta el servidor en modo de desarrollo adaptativo (*Hot Reload watch*):
    ```bash
    npm run dev
    ```
