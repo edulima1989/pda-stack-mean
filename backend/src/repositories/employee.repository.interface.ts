@@ -1,4 +1,4 @@
-export interface EmployeeRepositoryInterface {
+export interface IEmployeeRepository {
     getAllEmployees(): Promise<any[]>;
     createEmployee(employeeData: any): Promise<any>;
     getEmployeeById(employeeId: string): Promise<any>;
